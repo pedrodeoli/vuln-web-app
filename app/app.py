@@ -463,9 +463,9 @@ def profile(user_id):
         return redirect(url_for('login'))
 
     # Mitigation for IDOR: Verify that the logged-in user can only access their own profile
-    # if session['id'] != user_id:
-    #     app.logger.warning('User %s attempted to access profile of user %s', session['id'], user_id)
-    #     return render_template('exception.html'), 403
+    if session['id'] != user_id:
+        app.logger.warning('User %s attempted to access profile of user %s', session['id'], user_id)
+        return render_template('exception.html'), 403
 
     mydb = mysql.connector.connect(**config)
     mycursor = mydb.cursor(dictionary=True)
